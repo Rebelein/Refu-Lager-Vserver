@@ -1,0 +1,47 @@
+version: "3.9"
+name: refu-lager-infra
+services:
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: npm
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy
+
+  duckdns:
+    image: ghcr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    restart: unless-stopped
+    environment:
+      - SUBDOMAINS=rebelein-lager
+      - Tf12be1d8-7faf-4052-8064-31f84b177525
+      - TZ=Europe/Berlin
+    networks:
+      - proxy
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+volumes:
+  npm_data:
+  npm_letsencrypt:
+  portainer_data:
+
+networks:
+  proxy:
+    name: proxy
+    driver: bridge

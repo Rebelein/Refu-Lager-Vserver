@@ -1,4 +1,4 @@
-name: CI
+name: Frontend Image
 
 permissions:
   contents: read
@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push-backend:
+  build-and-push-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,18 +33,18 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/refu-lager-backend
+          images: ghcr.io/${{ github.repository_owner }}/refu-lager-frontend
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=tag
             type=sha,prefix=sha-,format=short
 
-      - name: Build and push Docker image (server)
+      - name: Build and push Docker image (frontend)
         uses: docker/build-push-action@v6
         with:
-          context: ./server
-          file: ./server/Dockerfile
+          context: .
+          file: ./Dockerfile.frontend
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

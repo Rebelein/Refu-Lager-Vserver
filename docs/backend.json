@@ -1,0 +1,199 @@
+
+{
+  "entities": {
+    "Article": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Article",
+      "type": "object",
+      "description": "Represents an inventory item with its details and stock information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Article entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name or description of the article."
+        },
+        "manufacturerItemNumbers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "number": { "type": "string" },
+              "manufacturer": { "type": "string" }
+            }
+          },
+          "description": "A list of all manufacturer's article numbers and their corresponding manufacturers."
+        },
+        "preferredManufacturerItemNumber": {
+          "type": "string",
+          "description": "The manufacturer item number to be preferably used."
+        },
+        "barcode": {
+          "type": "string",
+          "description": "The EAN barcode for the item."
+        },
+        "mainLocation": {
+          "type": "string",
+          "description": "The main storage location (e.g., shelf name)."
+        },
+        "subLocation": {
+          "type": "string",
+          "description": "The specific sub-location (e.g., bin number)."
+        },
+        "stocks": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "Stock levels at different locations."
+        },
+        "minStocks": {
+           "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "Minimum stock levels at different locations."
+        },
+        "suppliers": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "preferredWholesalerId": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "linkedImageUrl": {
+          "type": "string"
+        },
+        "labelLastPrintedAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "itemType": {
+          "type": "string",
+          "enum": ["item"]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "stocks",
+        "minStocks"
+      ]
+    },
+    "Machine": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Machine",
+      "type": "object",
+      "description": "Represents a rentable machine or tool with its rental status and history.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Machine entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the machine."
+        },
+        "rentalStatus": {
+          "type": "string",
+          "enum": ["available", "rented", "in_repair", "reserved"],
+          "description": "The current rental status of the machine."
+        },
+        "rentedBy": {
+          "type": "object",
+          "description": "Information about who currently has the machine."
+        },
+        "rentalHistory": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "A log of all rental and return events."
+        },
+        "reservations": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "A list of future reservations for the machine."
+        },
+        "itemType": {
+          "type": "string",
+          "enum": ["machine"]
+        }
+      },
+      "required": ["id", "name", "rentalStatus", "itemType"]
+    },
+    "AppSettings": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AppSettings",
+      "type": "object",
+      "description": "Stores global settings for the application, such as API keys.",
+      "properties": {
+        "ai": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "enum": ["google", "openrouter"]
+            },
+            "model": {
+              "type": "string"
+            },
+            "apiKey": {
+              "type": "string"
+            }
+          }
+        },
+        "deliveryNoteAi": {
+           "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "enum": ["google", "openrouter"]
+            },
+            "model": {
+              "type": "string"
+            },
+            "apiKey": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "/articles/{articleId}": {
+      "schema": {
+        "$ref": "#/entities/Article"
+      },
+      "description": "Stores article data."
+    },
+     "/machines/{machineId}": {
+      "schema": {
+        "$ref": "#/entities/Machine"
+      },
+      "description": "Stores machine data."
+    },
+    "/app_settings/global": {
+      "schema": {
+        "$ref": "#/entities/AppSettings"
+      },
+      "description": "Stores global application settings in a single document."
+    }
+  }
+}

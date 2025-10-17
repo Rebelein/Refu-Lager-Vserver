@@ -1,0 +1,18 @@
+{
+    "name": "Rebelein Lager",
+    "short_name": "Rebelein Lager",
+    "description": "Lagerverwaltung für Rebelein",
+    "start_url": "/",
+    "display": "standalone",
+    "display_override": ["window-controls-overlay"],
+    "background_color": "#181E2C",
+    "theme_color": "#181E2C",
+    "icons": [
+        {
+            "src": "logo.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}

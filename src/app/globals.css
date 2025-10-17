@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 142.1 70.6% 45.3%;
+    --radius: 0.75rem;
+    --chart-1: 210 90% 55%;
+    --chart-2: 142.1 70.6% 45.3%;
+    --chart-3: 197 37% 44%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 220 29% 14%;
+    --foreground: 210 40% 98%;
+    --card: 220 23% 20%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 47.4% 11.2%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 142.1 71% 45%;
+    --primary-foreground: 142.1 71% 15%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 23.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 142.1 71% 45%;
+    --chart-1: 210 90% 55%;
+    --chart-2: 142.1 71% 45%;
+    --chart-3: 197 37% 44%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  .animate-glow-red {
+    animation: glow-red 2s infinite;
+  }
+  .animate-glow-yellow {
+    animation: glow-yellow 2s infinite;
+  }
+  .animate-glow-green {
+    animation: glow-green 2s infinite;
+  }
+   .animate-glow-orange {
+    animation: glow-orange 2s infinite;
+  }
+
+  .app-background {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .app-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://e0.pxfuel.com/wallpapers/910/199/desktop-wallpaper-dark-texture-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(4px) brightness(0.4);
+    z-index: -2;
+    transform: scale(1.05);
+  }
+
+  .app-background::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: hsl(var(--background) / 0.8);
+    z-index: -1;
+  }
+}

@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://firebase.google.com/static/apphosting/schema.json
+
+specVersion: v1alpha1
+
+buildConfig:
+  buildCommand: npm run build
+  destinationDir: .next
+
+runConfig:
+  cpu: 1
+  memoryMiB: 1024
+  
+requiredAPIs:
+  - cloudbuild.googleapis.com

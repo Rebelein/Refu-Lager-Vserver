@@ -1,0 +1,77 @@
+version: "3.9"
+name: refu-lager-app
+services:
+  mongodb:
+    image: mongo:7
+    container_name: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo_pwd_change_me
+      MONGO_INITDB_DATABASE: admin
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+      - /opt/refu-lager/app/mongo-init/:/docker-entrypoint-initdb.d/
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    networks:
+      - appnet
+
+  backend:
+    image: ghcr.io/rebelein/refu-lager-backend:latest
+    container_name: refu-lager-backend
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      CORS_ORIGIN: https://rebelein-lager.duckdns.org
+      MONGO_URI: mongodb://mongo:mongo_pwd_change_me@mongodb:27017/lagerrebelein?authSource=admin
+    networks:
+      - appnet
+      - proxy
+    expose:
+      - "4000"
+
+  frontend:
+    image: ghcr.io/rebelein/refu-lager-frontend:latest
+    container_name: refu-lager-frontend
+    depends_on:
+      - backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    networks:
+      - appnet
+      - proxy
+    expose:
+      - "3000"
+
+  mongo-express:
+    image: mongo-express:1.0.2-20
+    container_name: mongo-express
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:mongo_pwd_change_me@mongodb:27017/?authSource=admin
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: change_me_admin
+    networks:
+      - appnet
+      - proxy
+    expose:
+      - "8081"
+
+volumes:
+  mongo_data:
+  mongo_config:
+
+networks:
+  appnet:
+    driver: bridge
+  proxy:
+    external: true
+    name: proxy
